@@ -38,6 +38,16 @@ class Event < ActiveRecord::Base
     source: :tag
 
 
+  #  Nested attributes
+  #-----------------------------------------------
+  accepts_nested_attributes_for :thumbnail,
+    allow_destroy: true
+
+  accepts_nested_attributes_for :event_dates,
+    allow_destroy: true,
+    reject_if: ->(attr) { attr.except('id').values.any?(&:blank?) }
+
+
   #  Validations
   #-----------------------------------------------
   validates_associated :area, presence: true
@@ -59,6 +69,16 @@ class Event < ActiveRecord::Base
     inclusion: { in: 1..47 }
   validates :postal_code, postal_code: true
   validates :address, presence: true
+
+
+  #  Scope
+  #-----------------------------------------------
+  paginates_per 10
+
+  scope :public, -> { with_status :public }
+
+  scope :holiday, -> { joins(:event_dates).merge(EventDate.holiday) }
+  scope :weekday, -> { joins(:event_dates).merge(EventDate.weekday) }
 
 
   #  Accessors

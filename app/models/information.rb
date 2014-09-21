@@ -39,4 +39,9 @@ class Information < ActiveRecord::Base
     default: :private,
     scope: true
 
+
+  #  Scopes
+  #-----------------------------------------------
+  paginates_per 20
+
 end

@@ -38,6 +38,11 @@ class User < ActiveRecord::Base
     inclusion: { in: %w[general creator organizer] }
 
 
+  #  Scopes
+  #-----------------------------------------------
+  paginates_per 50
+
+
   #  Accessors
   #-----------------------------------------------
   enumerize :role,

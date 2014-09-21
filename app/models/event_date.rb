@@ -30,6 +30,12 @@ class EventDate < ActiveRecord::Base
   end
 
 
+  #  Scopes
+  #-----------------------------------------------
+  scope :holiday, -> { where(holiday: true).group(:event_id) }
+  scope :weekday, -> { where(weekday: true).group(:event_id) }
+
+
   #  Callbacks
   #-----------------------------------------------
   before_validation do |date|
