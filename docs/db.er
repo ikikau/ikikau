@@ -155,4 +155,4 @@ user_accounts 1--1 users # dependent: :delete
   created_at { label: "datetime" }
   updated_at { label: "datetime" }
 
-users 1--1 media { label: "avatar" } # dependent: :delete
+users 1--? media { label: "avatar" } # dependent: :delete
