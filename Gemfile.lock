@@ -53,6 +53,8 @@ GEM
       rack (>= 0.9.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
+    bootstrap-sass (3.2.0.2)
+      sass (~> 3.2)
     browser (0.6.0)
     builder (3.2.2)
     bullet (4.13.2)
@@ -473,6 +475,7 @@ DEPENDENCIES
   awesome_print
   better_errors
   binding_of_caller
+  bootstrap-sass
   browser
   bullet
   capistrano (~> 3.2.0)
