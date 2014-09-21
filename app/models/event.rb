@@ -119,4 +119,13 @@ class Event < ActiveRecord::Base
     default_style: :thumbnail,
     default_url: '//placehold.it/240x170'
 
+
+  #  Callbacks
+  #-----------------------------------------------
+  before_validation :format_attrs!
+
+  def format_attrs!
+    self.postal_code = self.postal_code.gsub /\D/, ''
+  end
+
 end
