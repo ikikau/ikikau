@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     resources :events, except: :show
     resources :tags, except: :show
     resources :users, except: :show
+    resources :admin_user_accounts, except: :show
     resources :admin_users, except: :show
     resources :information, except: :show
     resources :features, except: :show
