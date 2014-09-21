@@ -44,7 +44,7 @@ end
 
 
 app_path = '/home/webapp/project/ikikau.com'
-shared_path = "#{app_path}/shared"
+shared_path = "#{app_path}"
 
 worker_processes Integer(ENV['WEB_CONCURRENCY'] || 3)
 
