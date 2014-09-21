@@ -5,8 +5,11 @@ class AddForeignKeys < ActiveRecord::Migration
     add_foreign_key :events, :areas, column: :area_id, dependent: :delete
     add_foreign_key :events, :media, column: :thumbnail_id, dependent: :nullify
 
-    add_foreign_key :event_users, :events, column: :event_id, dependent: :delete
-    add_foreign_key :event_users, :users, column: :user_id, dependent: :delete
+    add_foreign_key :event_creators, :events, column: :event_id, dependent: :delete
+    add_foreign_key :event_creators, :users, column: :user_id, dependent: :delete
+
+    add_foreign_key :event_organizers, :events, column: :event_id, dependent: :delete
+    add_foreign_key :event_organizers, :users, column: :user_id, dependent: :delete
 
     add_foreign_key :event_dates, :events, column: :event_id, dependent: :delete
 

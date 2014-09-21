@@ -6,8 +6,8 @@
 #  event_id :integer          not null, indexed
 #  start_at :datetime         not null
 #  end_at   :datetime         not null
-#  weekday  :integer          not null
-#  holiday  :boolean          not null
+#  weekday  :boolean          not null, indexed
+#  holiday  :boolean          not null, indexed
 #
 
 class EventDate < ActiveRecord::Base
@@ -24,7 +24,7 @@ class EventDate < ActiveRecord::Base
   validates :end_at, presence: true
 
   validate do |date|
-    unless Time.now.to_i < self.start_at.to_i && self.start_at.to_i < self.end_at.to_i
+    unless Date.today < self.start_at && self.start_at < self.end_at
       self.errors.add :start_at, '正しい期間を指定して下さい'
     end
   end

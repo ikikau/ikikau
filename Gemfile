@@ -4,6 +4,7 @@ gem 'rails', '4.1.4'
 
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
 gem 'acts-as-taggable-on'
+gem 'bootstrap-sass'
 gem 'browser'
 gem 'coffee-rails', '~> 4.0.0'
 gem 'compass-rails'

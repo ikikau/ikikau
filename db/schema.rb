@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140921050838) do
+ActiveRecord::Schema.define(version: 20140921081640) do
 
   create_table "admin_user_accounts", force: true do |t|
     t.integer  "admin_user_id",                       null: false
@@ -48,15 +48,25 @@ ActiveRecord::Schema.define(version: 20140921050838) do
     t.datetime "updated_at"
   end
 
+  create_table "event_creators", force: true do |t|
+    t.integer "event_id", null: false
+    t.integer "user_id",  null: false
+  end
+
+  add_index "event_creators", ["event_id"], name: "event_creators_event_id_fk", using: :btree
+  add_index "event_creators", ["user_id"], name: "event_creators_user_id_fk", using: :btree
+
   create_table "event_dates", force: true do |t|
-    t.integer  "event_id",           null: false
-    t.datetime "start_at",           null: false
-    t.datetime "end_at",             null: false
-    t.integer  "weekday",  limit: 1, null: false
-    t.boolean  "holiday",            null: false
+    t.integer  "event_id", null: false
+    t.datetime "start_at", null: false
+    t.datetime "end_at",   null: false
+    t.boolean  "weekday",  null: false
+    t.boolean  "holiday",  null: false
   end
 
   add_index "event_dates", ["event_id"], name: "index_event_dates_on_event_id", using: :btree
+  add_index "event_dates", ["holiday"], name: "index_event_dates_on_holiday", using: :btree
+  add_index "event_dates", ["weekday"], name: "index_event_dates_on_weekday", using: :btree
 
   create_table "event_images", force: true do |t|
     t.integer  "event_id",                 null: false
@@ -71,13 +81,13 @@ ActiveRecord::Schema.define(version: 20140921050838) do
   add_index "event_images", ["event_id"], name: "index_event_images_on_event_id", using: :btree
   add_index "event_images", ["medium_id"], name: "event_images_medium_id_fk", using: :btree
 
-  create_table "event_users", force: true do |t|
+  create_table "event_organizers", force: true do |t|
     t.integer "event_id", null: false
     t.integer "user_id",  null: false
   end
 
-  add_index "event_users", ["event_id"], name: "event_users_event_id_fk", using: :btree
-  add_index "event_users", ["user_id"], name: "event_users_user_id_fk", using: :btree
+  add_index "event_organizers", ["event_id"], name: "event_organizers_event_id_fk", using: :btree
+  add_index "event_organizers", ["user_id"], name: "event_organizers_user_id_fk", using: :btree
 
   create_table "events", force: true do |t|
     t.integer  "area_id",                              null: false
@@ -120,6 +130,16 @@ ActiveRecord::Schema.define(version: 20140921050838) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "sessions", force: true do |t|
+    t.string   "session_id", null: false
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", unique: true, using: :btree
+  add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
 
   create_table "taggings", force: true do |t|
     t.integer "tag_id",        null: false
@@ -168,13 +188,16 @@ ActiveRecord::Schema.define(version: 20140921050838) do
 
   add_foreign_key "admin_user_accounts", "admin_users", name: "admin_user_accounts_admin_user_id_fk", dependent: :delete
 
+  add_foreign_key "event_creators", "events", name: "event_creators_event_id_fk", dependent: :delete
+  add_foreign_key "event_creators", "users", name: "event_creators_user_id_fk", dependent: :delete
+
   add_foreign_key "event_dates", "events", name: "event_dates_event_id_fk", dependent: :delete
 
   add_foreign_key "event_images", "events", name: "event_images_event_id_fk", dependent: :delete
   add_foreign_key "event_images", "media", name: "event_images_medium_id_fk", dependent: :delete
 
-  add_foreign_key "event_users", "events", name: "event_users_event_id_fk", dependent: :delete
-  add_foreign_key "event_users", "users", name: "event_users_user_id_fk", dependent: :delete
+  add_foreign_key "event_organizers", "events", name: "event_organizers_event_id_fk", dependent: :delete
+  add_foreign_key "event_organizers", "users", name: "event_organizers_user_id_fk", dependent: :delete
 
   add_foreign_key "events", "areas", name: "events_area_id_fk", dependent: :delete
   add_foreign_key "events", "media", name: "events_thumbnail_id_fk", column: "thumbnail_id", dependent: :nullify

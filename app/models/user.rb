@@ -23,8 +23,15 @@ class User < ActiveRecord::Base
   belongs_to :avatar,
     class_name: '::Medium',
     dependent: :destroy
-  has_many :event_users, dependent: :destroy
-  has_many :events, through: :event_users
+  has_many :event_creators, dependent: :destroy
+  has_many :event_organizers, dependent: :destroy
+
+
+  #  Nested attributes
+  #-----------------------------------------------
+  accepts_nested_attributes_for :avatar,
+    allow_destroy: true,
+    reject_if: :all_blank
 
 
   #  Validations

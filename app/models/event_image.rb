@@ -24,6 +24,13 @@ class EventImage < ActiveRecord::Base
   belongs_to :medium
 
 
+  #  Nested attributes
+  #-----------------------------------------------
+  accepts_nested_attributes_for :medium,
+    allow_destroy: true,
+    reject_if: :all_blank
+
+
   #  Validations
   #-----------------------------------------------
   validates_associated :event, presence: true

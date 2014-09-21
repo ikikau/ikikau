@@ -30,7 +30,14 @@ class Event < ActiveRecord::Base
     class_name: '::Medium',
     dependent: :destroy
   has_many :event_dates, dependent: :destroy
-  has_many :event_users, dependent: :destroy
+  has_many :event_creators, dependent: :destroy
+  has_many :event_organizers, dependent: :destroy
+  has_many :creators,
+    through: :event_creators,
+    source: :user
+  has_many :organizers,
+    through: :event_organizers,
+    source: :user
   has_many :event_images, dependent: :destroy
   has_many :taggings, as: :taggable
   has_many :tags,
@@ -41,17 +48,36 @@ class Event < ActiveRecord::Base
   #  Nested attributes
   #-----------------------------------------------
   accepts_nested_attributes_for :thumbnail,
-    allow_destroy: true
+    allow_destroy: true,
+    reject_if: :all_blank
 
   accepts_nested_attributes_for :event_dates,
     allow_destroy: true,
-    reject_if: ->(attr) { attr.except('id').values.any?(&:blank?) }
+    reject_if: :all_blank
+
+  accepts_nested_attributes_for :event_images,
+    allow_destroy: true,
+    reject_if: :all_blank
+
+  accepts_nested_attributes_for :event_creators,
+    allow_destroy: true,
+    reject_if: :all_blank
+
+  accepts_nested_attributes_for :event_organizers,
+    allow_destroy: true,
+    reject_if: :all_blank
 
 
   #  Validations
   #-----------------------------------------------
   validates_associated :area, presence: true
   validates_associated :thumbnail
+  # validates :event_creators,
+  #   presence: true,
+  #   length: { minimum: 1 }
+  # validates :event_organizers,
+  #   presence: true,
+  #   length: { minimum: 1 }
   validates :title,
     presence: true,
     length: { maximum: 250 }
@@ -75,8 +101,6 @@ class Event < ActiveRecord::Base
   #-----------------------------------------------
   paginates_per 10
 
-  scope :public, -> { with_status :public }
-
   scope :holiday, -> { joins(:event_dates).merge(EventDate.holiday) }
   scope :weekday, -> { joins(:event_dates).merge(EventDate.weekday) }
 
@@ -94,5 +118,14 @@ class Event < ActiveRecord::Base
   attr_media_url :thumbnail,
     default_style: :thumbnail,
     default_url: '//placehold.it/240x170'
+
+
+  #  Callbacks
+  #-----------------------------------------------
+  before_validation :format_attrs!
+
+  def format_attrs!
+    self.postal_code = self.postal_code.gsub /\D/, ''
+  end
 
 end

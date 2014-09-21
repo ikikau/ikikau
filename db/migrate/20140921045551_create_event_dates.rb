@@ -5,8 +5,11 @@ class CreateEventDates < ActiveRecord::Migration
 
       t.datetime :start_at, null: false
       t.datetime :end_at, null: false
-      t.integer :weekday, limit: 1, null: false, index: true
+      t.boolean :weekday, null: false
       t.boolean :holiday, null: false
     end
+
+    add_index :event_dates, :weekday
+    add_index :event_dates, :holiday
   end
 end
