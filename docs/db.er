@@ -1,0 +1,136 @@
+[admin_user_accounts]
+* id                     { label: "integer" }
++ admin_user_id          { label: "integer" } # index: true, null: false
+  email                  { label: "string" }  # null: false, default: ''
+  encrypted_password     { label: "string" }  # null: false, default: ''
+  reset_password_token   { label: "string" }
+  reset_password_sent_at { label: "datetime" }
+  remember_created_at    { label: "datetime" }
+  sign_in_count          { label: "integer" } # null: false, default: 0
+  current_sign_in_at     { label: "datetime" }
+  last_sign_in_at        { label: "datetime" }
+  current_sign_in_ip     { label: "string" }
+  last_sign_in_ip        { label: "string" }
+  created_at             { label: "datetime" }
+  updated_at             { label: "datetime" }
+
+admin_user_accounts 1--1 admin_users # dependent: :delete
+
+
+[admin_users]
+* id         { label: "integer" }
++ avatar_id  { label: "integer" }
+  name       { label: "string" } # null: false
+  created_at { label: "datetime" }
+  updated_at { label: "datetime" }
+
+
+[areas]
+* id           { label: "integer" }
+  name         { label: "string" }  # null: false, default: ''
+  events_count { label: "integer" } # null: false, default: 0
+  sort         { label: "integer" } # null: false, default: 0
+
+
+[events]
+* id            { label: "integer" }
++ area_id       { label: "integer" } # index: true, null: false
++ thumbnail_id  { label: "integer" }
+  title         { label: "string" }  # null: false, default: ''
+  context       { label: "text" }
+  status        { label: "integer" } # limit: 1, null: false, default: 0
+  location_name { label: "string" }
+  prefecture    { label: "integer" } # limit: 1, index: true, null: false
+  postal_code   { label: "string" }  # limit: 7
+  address       { label: "string" }
+
+events +--1 areas # dependent: :delete
+events 1--1 media # dependent: :nullify
+
+
+[event_dates]
+* id       { label: "integer" }
++ event_id { label: "integer" }  # index: true, null: false
+  start_at { label: "datetime" } # null: false
+  end_at   { label: "datetime" } # null: false
+  holiday  { label: "boolean" }  # null: false
+  weekday  { label: "integer" }  # limit: 1, null: false, index: true
+
+event_dates +--1 events # dependent: :delete
+
+
+[event_images]
+* id          { label: "integer" }
++ event_id    { label: "integer" } # index: true, null: false
+  medium_id   { label: "integer" } # null: false
+  title       { label: "string" }  # null: false, default: ''
+  description { label: "text" }
+  sort        { label: "integer" } # null: false, default: 0
+
+event_images 1--1 media # dependent: :delete
+
+
+[features]
+
+
+[infomation]
+
+
+[media]
++ id                 { label: "integer" }
+  asset_file_name    { label: "string" }
+  asset_content_type { label: "string" }
+  asset_file_size    { label: "integer" }
+  asset_updated_at   { label: "datetime" }
+  created_at         { label: "datetime" }
+  updated_at         { label: "datetime" }
+
+
+[tags]
+* id             { label: "integer" }
+  name           { label: "string" }
+  taggings_count { label: "integer" } # default: 0
+
+
+[taggings]
+* id            { label: "integer" }
++ tag_id        { label: "integer" } # index: true, null: false
++ taggable_id   { label: "integer" } # polymorphic: true, index: true, null: false
++ taggable_type { label: "string" }
++ tagger_id     { label: "integer" } # polymorphic: true, index: true, null: false
++ tagger_type   { label: "string" }
+  context       { label: "string" }
+  created_at    { label: "datetime" }
+
+taggings +--1 tags                          # dependent: :delete
+taggings +--1 events { label: "taggables" } # psuedo fk
+
+
+[user_accounts]
+* id                     { label: "integer" }
++ admin_user_id          { label: "integer" } # index: true, null: false
+  email                  { label: "string" }  # null: false, default: ''
+  encrypted_password     { label: "string" }  # null: false, default: ''
+  reset_password_token   { label: "string" }
+  reset_password_sent_at { label: "datetime" }
+  remember_created_at    { label: "datetime" }
+  sign_in_count          { label: "integer" } # null: false, default: 0
+  current_sign_in_at     { label: "datetime" }
+  last_sign_in_at        { label: "datetime" }
+  current_sign_in_ip     { label: "string" }
+  last_sign_in_ip        { label: "string" }
+  created_at             { label: "datetime" }
+  updated_at             { label: "datetime" }
+
+user_accounts 1--1 users # dependent: :delete
+
+
+[users]
+* id         { label: "integer" }
++ avatar_id  { label: "integer" }
+  name       { label: "string" }  # null: false
+  profile    { label: "text" }
+  role       { label: "integer" } # limit: 1, null: false
+  created_at { label: "datetime" }
+  updated_at { label: "datetime" }
+
