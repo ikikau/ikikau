@@ -45,7 +45,16 @@ admin_user_accounts 1--1 admin_users # dependent: :delete
   address       { label: "string" }
 
 events +--1 areas # dependent: :delete
-events 1--1 media # dependent: :nullify
+events 1--? media # dependent: :nullify
+
+
+[event_users]
+* id { label: "integer" }
++ evnet_id { label: "integer" } # index: false, null: false
++ user_id { label: "integer" }  # index: false, null: false
+
+event_users +--1 events # dependent: :delete
+event_users +--1 users  # dependent: :delete
 
 
 [event_dates]
@@ -146,3 +155,4 @@ user_accounts 1--1 users # dependent: :delete
   created_at { label: "datetime" }
   updated_at { label: "datetime" }
 
+users 1--1 media { label: "avatar" } # dependent: :delete
