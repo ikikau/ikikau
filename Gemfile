@@ -47,7 +47,6 @@ group :development do
   gem 'capistrano-rvm'
   gem 'capistrano-bundler'
   gem 'capistrano3-unicorn'
-  gem 'slackistrano', require: false
   gem 'letter_opener'
   gem 'meta_request'
   gem 'pry-remote'
