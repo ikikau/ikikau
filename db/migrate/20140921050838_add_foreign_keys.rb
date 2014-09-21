@@ -10,6 +10,7 @@ class AddForeignKeys < ActiveRecord::Migration
 
     add_foreign_key :event_dates, :events, column: :event_id, dependent: :delete
 
+    add_foreign_key :event_images, :events, column: :event_id, dependent: :delete
     add_foreign_key :event_images, :media, column: :medium_id, dependent: :delete
 
     add_foreign_key :taggings, :tags, column: :tag_id, dependent: :delete

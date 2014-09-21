@@ -5,7 +5,7 @@ class CreateEvents < ActiveRecord::Migration
       t.belongs_to :thumbnail
 
       t.string :title, null: false, default: ''
-      t.text :context
+      t.text :content
       t.integer :status, limit: 1, null: false, default: 0
       t.string :location_name, null: false, default: ''
       t.integer :prefecture, limit: 1, index: true, null: false

@@ -83,7 +83,7 @@ ActiveRecord::Schema.define(version: 20140921050838) do
     t.integer  "area_id",                              null: false
     t.integer  "thumbnail_id"
     t.string   "title",                   default: "", null: false
-    t.text     "context"
+    t.text     "content"
     t.integer  "status",        limit: 1, default: 0,  null: false
     t.string   "location_name",           default: "", null: false
     t.integer  "prefecture",    limit: 1,              null: false
@@ -122,18 +122,13 @@ ActiveRecord::Schema.define(version: 20140921050838) do
   end
 
   create_table "taggings", force: true do |t|
-    t.integer  "tag_id",        null: false
-    t.integer  "taggable_id",   null: false
-    t.string   "taggable_type", null: false
-    t.integer  "tagger_id",     null: false
-    t.string   "tagger_type",   null: false
-    t.string   "context"
-    t.datetime "created_at"
+    t.integer "tag_id",        null: false
+    t.integer "taggable_id",   null: false
+    t.string  "taggable_type", null: false
   end
 
   add_index "taggings", ["tag_id"], name: "index_taggings_on_tag_id", using: :btree
   add_index "taggings", ["taggable_id", "taggable_type"], name: "index_taggings_on_taggable_id_and_taggable_type", using: :btree
-  add_index "taggings", ["tagger_id", "tagger_type"], name: "index_taggings_on_tagger_id_and_tagger_type", using: :btree
 
   create_table "tags", force: true do |t|
     t.string  "name",           default: "", null: false
@@ -175,6 +170,7 @@ ActiveRecord::Schema.define(version: 20140921050838) do
 
   add_foreign_key "event_dates", "events", name: "event_dates_event_id_fk", dependent: :delete
 
+  add_foreign_key "event_images", "events", name: "event_images_event_id_fk", dependent: :delete
   add_foreign_key "event_images", "media", name: "event_images_medium_id_fk", dependent: :delete
 
   add_foreign_key "event_users", "events", name: "event_users_event_id_fk", dependent: :delete

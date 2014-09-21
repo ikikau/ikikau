@@ -37,7 +37,7 @@ admin_user_accounts 1--1 admin_users # dependent: :delete
 + area_id       { label: "integer" } # index: true, null: false
 + thumbnail_id  { label: "integer" }
   title         { label: "string" }  # null: false, default: ''
-  context       { label: "text" }
+  content       { label: "text" }
   status        { label: "integer" } # limit: 1, null: false, default: 0
   location_name { label: "string" }  # null: false, default: ''
   prefecture    { label: "integer" } # limit: 1, index: true, null: false
@@ -73,14 +73,15 @@ event_dates +--1 events # dependent: :delete
 [event_images]
 * id          { label: "integer" }
 + event_id    { label: "integer" } # index: true, null: false
-  medium_id   { label: "integer" } # null: false
++ medium_id   { label: "integer" } # null: false
   title       { label: "string" }  # null: false, default: ''
   description { label: "text" }
   sort        { label: "integer" } # null: false, default: 0
   created_at  { label: "datetime" }
   updated_at  { label: "datetime" }
 
-event_images 1--1 media # dependent: :delete
+event_images +--1 events # dependent: :delete
+event_images 1--1 media  # dependent: :delete
 
 
 [features]
@@ -122,10 +123,6 @@ event_images 1--1 media # dependent: :delete
 + tag_id        { label: "integer" } # index: true, null: false
 + taggable_id   { label: "integer" } # polymorphic: true, index: true, null: false
 + taggable_type { label: "string" }
-+ tagger_id     { label: "integer" } # polymorphic: true, index: true, null: false
-+ tagger_type   { label: "string" }
-  context       { label: "string" }
-  created_at    { label: "datetime" }
 
 taggings +--1 tags                          # dependent: :delete
 taggings +--1 events { label: "taggables" } # psuedo fk
