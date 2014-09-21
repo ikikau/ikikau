@@ -27,6 +27,25 @@ ActiveRecord::Base.transaction do
 end
 
 
+#  Tag
+#-----------------------------------------------
+puts '==> Creating tags...'
+
+ActiveRecord::Base.transaction do
+  $tags = []
+
+  (1..5).each do |i|
+    tag = Tag.new name: 'タグ %d' % i
+
+    tag.save!
+    $tags << tag
+    print '#'
+  end
+
+  puts
+end
+
+
 #  Admin
 #-----------------------------------------------
 puts '==> Creating an admin user...'
@@ -115,6 +134,46 @@ ActiveRecord::Base.transaction do
 
     event.save!
     $events << event
+    print '#'
+  end
+
+  puts
+end
+
+
+#  Information
+#-----------------------------------------------
+puts '==> Creating infomation...'
+
+ActiveRecord::Base.transaction do
+  (1..5).each do |i|
+    information = Information.new(
+      title:   'お知らせ %d' % i,
+      status:  :public,
+      content: '内容' * 20,
+    )
+
+    information.save!
+    print '#'
+  end
+
+  puts
+end
+
+
+#  Feature
+#-----------------------------------------------
+puts '==> Creating features...'
+
+ActiveRecord::Base.transaction do
+  (1..5).each do |i|
+    feature = Feature.new(
+      title:   '特集 %d' % i,
+      status:  :public,
+      content: '内容' * 20,
+    )
+
+    feature.save!
     print '#'
   end
 

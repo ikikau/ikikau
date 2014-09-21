@@ -32,8 +32,12 @@ class Event < ActiveRecord::Base
   has_many :event_dates, dependent: :destroy
   has_many :event_creators, dependent: :destroy
   has_many :event_organizers, dependent: :destroy
-  has_many :creators, through: :event_creators, source: :user
-  has_many :organizers, through: :event_organizers, source: :user
+  has_many :creators,
+    through: :event_creators,
+    source: :user
+  has_many :organizers,
+    through: :event_organizers,
+    source: :user
   has_many :event_images, dependent: :destroy
   has_many :taggings, as: :taggable
   has_many :tags,
