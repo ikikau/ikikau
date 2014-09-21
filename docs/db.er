@@ -50,13 +50,22 @@ events +--1 areas # dependent: :delete
 events 1--? media # dependent: :nullify
 
 
-[event_users]
+[event_creators]
 * id       { label: "integer" }
 + event_id { label: "integer" } # index: false, null: false
 + user_id  { label: "integer" } # index: false, null: false
 
-event_users +--1 events # dependent: :delete
-event_users +--1 users  # dependent: :delete
+event_creators +--1 events # dependent: :delete
+event_creators +--1 users  # dependent: :delete
+
+
+[event_organizers]
+* id       { label: "integer" }
++ event_id { label: "integer" } # index: false, null: false
++ user_id  { label: "integer" } # index: false, null: false
+
+event_creators +--1 events # dependent: :delete
+event_creators +--1 users  # dependent: :delete
 
 
 [event_dates]

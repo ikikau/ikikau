@@ -19,4 +19,30 @@
 #
 
 class UserAccount < ActiveRecord::Base
+
+  #  Associations
+  #-----------------------------------------------
+  belongs_to :user, dependent: :destroy
+
+
+  #  Nested attributes
+  #-----------------------------------------------
+  accepts_nested_attributes_for :user
+
+
+  #  Validations
+  #-----------------------------------------------
+  validates_associated :user, presence: true
+  validates :email, presence: true, email: true
+
+
+  #  Device
+  #-----------------------------------------------
+  devise :database_authenticatable,
+    :registerable,
+    :recoverable,
+    :rememberable,
+    :trackable,
+    :validatable
+
 end

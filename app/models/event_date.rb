@@ -24,7 +24,7 @@ class EventDate < ActiveRecord::Base
   validates :end_at, presence: true
 
   validate do |date|
-    unless Time.now.to_i < self.start_at.to_i && self.start_at.to_i < self.end_at.to_i
+    unless Date.today < self.start_at && self.start_at < self.end_at
       self.errors.add :start_at, '正しい期間を指定して下さい'
     end
   end

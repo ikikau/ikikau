@@ -28,7 +28,8 @@ class AdminUser < ActiveRecord::Base
   #  Nested attributes
   #-----------------------------------------------
   accepts_nested_attributes_for :avatar,
-    allow_destroy: true
+    allow_destroy: true,
+    reject_if: :all_blank
 
 
   #  Validations
