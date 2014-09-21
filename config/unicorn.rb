@@ -43,7 +43,7 @@ def rails_root
 end
 
 
-app_path = '/home/webapp/project/ikikau.com'
+app_path = '/home/webapp/project/ikikau.com/current'
 shared_path = "#{app_path}"
 
 worker_processes Integer(ENV['WEB_CONCURRENCY'] || 3)
