@@ -71,9 +71,21 @@ event_images 1--1 media # dependent: :delete
 
 
 [features]
+* id         { label: "integer" }
+  status     { label: "integer" } # limit: 1, null: false, default: 0
+  title      { label: "string" }  # null: false, default: ''
+  content    { label: "text" }
+  created_at { label: "datetime" }
+  updated_at { label: "datetime" }
 
 
 [infomation]
+* id         { label: "integer" }
+  status     { label: "integer" } # limit: 1, null: false, default: 0
+  title      { label: "string" }  # null: false, default: ''
+  content    { label: "text" }
+  created_at { label: "datetime" }
+  updated_at { label: "datetime" }
 
 
 [media]
