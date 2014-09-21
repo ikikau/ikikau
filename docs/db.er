@@ -28,8 +28,8 @@ admin_user_accounts 1--1 admin_users # dependent: :delete
 [areas]
 * id           { label: "integer" }
   name         { label: "string" }  # null: false, default: ''
-  events_count { label: "integer" } # null: false, default: 0
   sort         { label: "integer" } # null: false, default: 0
+  events_count { label: "integer" } # null: false, default: 0
 
 
 [events]
@@ -39,19 +39,21 @@ admin_user_accounts 1--1 admin_users # dependent: :delete
   title         { label: "string" }  # null: false, default: ''
   context       { label: "text" }
   status        { label: "integer" } # limit: 1, null: false, default: 0
-  location_name { label: "string" }
+  location_name { label: "string" }  # null: false, default: ''
   prefecture    { label: "integer" } # limit: 1, index: true, null: false
   postal_code   { label: "string" }  # limit: 7
-  address       { label: "string" }
+  address       { label: "string" }  # null: false, default: ''
+  created_at    { label: "datetime" }
+  updated_at    { label: "datetime" }
 
 events +--1 areas # dependent: :delete
 events 1--? media # dependent: :nullify
 
 
 [event_users]
-* id { label: "integer" }
-+ evnet_id { label: "integer" } # index: false, null: false
-+ user_id { label: "integer" }  # index: false, null: false
+* id       { label: "integer" }
++ event_id { label: "integer" } # index: false, null: false
++ user_id  { label: "integer" } # index: false, null: false
 
 event_users +--1 events # dependent: :delete
 event_users +--1 users  # dependent: :delete
@@ -62,8 +64,8 @@ event_users +--1 users  # dependent: :delete
 + event_id { label: "integer" }  # index: true, null: false
   start_at { label: "datetime" } # null: false
   end_at   { label: "datetime" } # null: false
-  holiday  { label: "boolean" }  # null: false
   weekday  { label: "integer" }  # limit: 1, null: false, index: true
+  holiday  { label: "boolean" }  # null: false
 
 event_dates +--1 events # dependent: :delete
 
@@ -75,6 +77,8 @@ event_dates +--1 events # dependent: :delete
   title       { label: "string" }  # null: false, default: ''
   description { label: "text" }
   sort        { label: "integer" } # null: false, default: 0
+  created_at  { label: "datetime" }
+  updated_at  { label: "datetime" }
 
 event_images 1--1 media # dependent: :delete
 
@@ -155,4 +159,4 @@ user_accounts 1--1 users # dependent: :delete
   created_at { label: "datetime" }
   updated_at { label: "datetime" }
 
-users 1--? media { label: "avatar" } # dependent: :delete
+users 1--? media { label: "avatar" } # dependent: :nullify
