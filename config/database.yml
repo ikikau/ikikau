@@ -50,5 +50,5 @@ test:
 production:
   <<: *default
   database: ikikau_production
-  username: ikikau
-  password: <%= ENV['IKIKAU_DATABASE_PASSWORD'] %>
+  username: ikikau_p
+  password: M7K5iVxeC9JMHDSSJFS
