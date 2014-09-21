@@ -59,21 +59,12 @@ event_creators +--1 events # dependent: :delete
 event_creators +--1 users  # dependent: :delete
 
 
-[event_organizers]
-* id       { label: "integer" }
-+ event_id { label: "integer" } # index: false, null: false
-+ user_id  { label: "integer" } # index: false, null: false
-
-event_creators +--1 events # dependent: :delete
-event_creators +--1 users  # dependent: :delete
-
-
 [event_dates]
 * id       { label: "integer" }
 + event_id { label: "integer" }  # index: true, null: false
   start_at { label: "datetime" } # null: false
   end_at   { label: "datetime" } # null: false
-  weekday  { label: "integer" }  # limit: 1, null: false, index: true
+  weekday  { label: "boolean" }  # null: false
   holiday  { label: "boolean" }  # null: false
 
 event_dates +--1 events # dependent: :delete
@@ -91,6 +82,15 @@ event_dates +--1 events # dependent: :delete
 
 event_images +--1 events # dependent: :delete
 event_images 1--1 media  # dependent: :delete
+
+
+[event_organizers]
+* id       { label: "integer" }
++ event_id { label: "integer" } # index: false, null: false
++ user_id  { label: "integer" } # index: false, null: false
+
+event_creators +--1 events # dependent: :delete
+event_creators +--1 users  # dependent: :delete
 
 
 [features]

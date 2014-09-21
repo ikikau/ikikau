@@ -57,14 +57,16 @@ ActiveRecord::Schema.define(version: 20140921050838) do
   add_index "event_creators", ["user_id"], name: "event_creators_user_id_fk", using: :btree
 
   create_table "event_dates", force: true do |t|
-    t.integer  "event_id",           null: false
-    t.datetime "start_at",           null: false
-    t.datetime "end_at",             null: false
-    t.integer  "weekday",  limit: 1, null: false
-    t.boolean  "holiday",            null: false
+    t.integer  "event_id", null: false
+    t.datetime "start_at", null: false
+    t.datetime "end_at",   null: false
+    t.boolean  "weekday",  null: false
+    t.boolean  "holiday",  null: false
   end
 
   add_index "event_dates", ["event_id"], name: "index_event_dates_on_event_id", using: :btree
+  add_index "event_dates", ["holiday"], name: "index_event_dates_on_holiday", using: :btree
+  add_index "event_dates", ["weekday"], name: "index_event_dates_on_weekday", using: :btree
 
   create_table "event_images", force: true do |t|
     t.integer  "event_id",                 null: false
