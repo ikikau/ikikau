@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.1.4'
+gem 'rails', '4.1.8'
 
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
 gem 'acts-as-taggable-on'
