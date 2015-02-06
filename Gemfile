@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.1.4'
+gem 'rails', '4.1.8'
 
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
 gem 'acts-as-taggable-on'
@@ -44,7 +44,7 @@ group :development do
   gem 'bullet'
   gem 'capistrano', '~> 3.2.0'
   gem 'capistrano-rails'
-  gem 'capistrano-rvm'
+  gem 'capistrano-rbenv'
   gem 'capistrano-bundler'
   gem 'capistrano3-unicorn'
   gem 'letter_opener'
