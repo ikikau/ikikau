@@ -11,5 +11,6 @@
 
 FactoryGirl.define do
   factory :tag do
+    sequence(:name) { |n| 'タグ %d' % n }
   end
 end

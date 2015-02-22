@@ -23,7 +23,7 @@ class Post < ActiveRecord::Base
   validates :status,
     presence: true,
     inclusion: { in: %w[private public] }
-  validates :status,
+  validates :kind,
     presence: true,
     inclusion: { in: %w[information feature] }
   validates :title,

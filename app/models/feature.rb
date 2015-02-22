@@ -18,4 +18,11 @@ class Feature < Post
   #-----------------------------------------------
   default_scope -> { with_kind :feature }
 
+
+  #  Callbacks
+  #-----------------------------------------------
+  before_validation do |information|
+    information.kind = :information
+  end
+
 end

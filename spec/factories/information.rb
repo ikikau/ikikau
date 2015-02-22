@@ -14,5 +14,8 @@
 
 FactoryGirl.define do
   factory :information do
+    sequence(:title) { |n| 'お知らせ %d' % n }
+    status :public
+    content '内容' * 20
   end
 end

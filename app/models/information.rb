@@ -18,4 +18,11 @@ class Information < Post
   #-----------------------------------------------
   default_scope -> { with_kind :information }
 
+
+  #  Callbacks
+  #-----------------------------------------------
+  before_validation do |information|
+    information.kind = :information
+  end
+
 end

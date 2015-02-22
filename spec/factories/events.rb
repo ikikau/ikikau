@@ -35,5 +35,10 @@
 
 FactoryGirl.define do
   factory :event do
+    sequence(:title) { |n| 'イベント %d' % n }
+    content '説明' * 20
+    status :public
+    prefecture 13
+    address_1 '渋谷区渋谷1-2-3'
   end
 end

@@ -28,5 +28,7 @@
 
 FactoryGirl.define do
   factory :admin_user_account do
+    sequence(:email) { |n| 'admin+%d@ikikau.com' % n }
+    password 'password'
   end
 end

@@ -36,6 +36,7 @@ class Event < ActiveRecord::Base
   extend Enumerize
   include Concerns::EnumerizeExtension
   include Concerns::MediaUrlAccessor
+  include Concerns::Location
 
 
   #  Associations
@@ -91,11 +92,6 @@ class Event < ActiveRecord::Base
   validates :status,
     presence: true,
     inclusion: { in: %w[private public] }
-  validates :prefecture,
-    presence: true,
-    inclusion: { in: 1..47 }
-  validates :postal_code, postal_code: true
-  validates :address, presence: true
 
 
   #  Scope
@@ -119,14 +115,5 @@ class Event < ActiveRecord::Base
   attr_media_url :thumbnail,
     default_style: :thumbnail,
     default_url: '//placehold.it/240x170'
-
-
-  #  Callbacks
-  #-----------------------------------------------
-  before_validation :format_attrs!
-
-  def format_attrs!
-    self.postal_code = self.postal_code.gsub /\D/, ''
-  end
 
 end

@@ -14,5 +14,8 @@
 
 FactoryGirl.define do
   factory :feature do
+    sequence(:title) { |n| '特集 %d' % n }
+    status :public
+    content '内容' * 20
   end
 end

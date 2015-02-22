@@ -1,4 +1,10 @@
 GIT
+  remote: git://github.com/creasty/jsonity.git
+  revision: b8035171a8f0da2e3e01ea6084176e83877929de
+  specs:
+    jsonity (1.1.0)
+
+GIT
   remote: git://github.com/rails/activerecord-session_store.git
   revision: 1cc0daf77d542045da4f6a43cba9ce04c27453dd
   specs:
@@ -150,6 +156,7 @@ GEM
     foreigner (1.7.2)
       activerecord (>= 3.0.0)
     fssm (0.2.10)
+    geocoder (1.2.7)
     gimei (0.2.0)
     gon (5.2.3)
       actionpack (>= 2.3.0)
@@ -379,12 +386,14 @@ DEPENDENCIES
   faker
   figaro
   foreigner
+  geocoder
   gimei
   gon
   haml-rails
   hirb
   hirb-unicode
   jquery-rails
+  jsonity!
   kaminari
   letter_opener
   meta-tags

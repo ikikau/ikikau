@@ -1,23 +1,25 @@
+include Ikikau::FactoryGirlHelper
+
+
 #  Area
 #-----------------------------------------------
 puts '==> Creating areas...'
 
 ActiveRecord::Base.transaction do
-  areas = [
-    '23区東エリア',
-    '23区西エリア',
-    '多摩エリア',
-    'その他',
+  areas = %w[
+    23区東エリア
+    23区西エリア
+    多摩エリア
+    その他
   ]
 
   $areas = []
 
   areas.each do |area|
-    area = Area.new name: area
+    area = fg_build.area name: area
 
     area.save!
     $areas << area
-
     print '#'
   end
 
@@ -34,8 +36,8 @@ puts '==> Creating tags...'
 ActiveRecord::Base.transaction do
   $tags = []
 
-  (1..5).each do |i|
-    tag = Tag.new name: 'タグ %d' % i
+  5.times do
+    tag = fg_build.tag
 
     tag.save!
     $tags << tag
@@ -51,9 +53,8 @@ end
 puts '==> Creating an admin user...'
 
 ActiveRecord::Base.transaction do
-  $the_admin_user_account = AdminUserAccount.new(
-    email:    'admin@ikikau.jp',
-    password: 'password',
+  $the_admin_user_account = fg_build.admin_user_account(
+    email: 'admin@ikikau.com'
   )
 
   $the_admin_user = $the_admin_user_account.build_admin_user(
@@ -73,29 +74,15 @@ puts '==> Creating users...'
 ActiveRecord::Base.transaction do
   $user_accounts = []
 
-  (1..15).each do |i|
-    user_account = UserAccount.new(
-      email:    'user+%d@example.com' % i,
-      password: 'password',
-    )
+  15.times do |i|
+    user_account = fg_build.user_account
 
-    user = user_account.build_user(
-      name:    Gimei.new.kanji,
-      profile: '私はやってません。',
+    user = user_account.build_user fg_attrs.user(
+      role: %w[participant organizer][2 * (i / 15.0)]
     )
-
-    case i
-    when 1..5
-      user.role = :general
-    when 6..10
-      user.role = :creator
-    when 11..15
-      user.role = :organizer
-    end
 
     user_account.save!
     $user_accounts << user_account
-
     print '#'
   end
 
@@ -112,25 +99,11 @@ puts '==> Creating events...'
 ActiveRecord::Base.transaction do
   $events = []
 
-  (1..20).each do |i|
-    event = Event.new(
-      area:          $the_area,
-      title:         'イベント %d' % i,
-      content:       '説明' * 20,
-      status:        :public,
-      location_name: '代々木公園',
-      prefecture:    13,
-      postal_code:   '1510052',
-      address:       '渋谷区代々木神園町2−1',
-    )
+  20.times do
+    event = fg_build.event area: $the_area
 
-    event.event_creators.build user: $the_user_account.user
-    event.event_organizers.build user: $the_user_account.user
-
-    event.event_dates.build(
-      start_at: Time.now,
-      end_at: Time.now + 10.months,
-    )
+    event.event_organizers.build fg_attrs.event_organizer(organizer_id: $the_user_account.user.id)
+    event.event_schedules.build fg_attrs.event_schedule
 
     event.save!
     $events << event
@@ -146,12 +119,8 @@ end
 puts '==> Creating infomation...'
 
 ActiveRecord::Base.transaction do
-  (1..5).each do |i|
-    information = Information.new(
-      title:   'お知らせ %d' % i,
-      status:  :public,
-      content: '内容' * 20,
-    )
+  5.times do
+    information = fg_build.information
 
     information.save!
     print '#'
@@ -166,12 +135,8 @@ end
 puts '==> Creating features...'
 
 ActiveRecord::Base.transaction do
-  (1..5).each do |i|
-    feature = Feature.new(
-      title:   '特集 %d' % i,
-      status:  :public,
-      content: '内容' * 20,
-    )
+  5.times do
+    feature = fg_build.feature
 
     feature.save!
     print '#'

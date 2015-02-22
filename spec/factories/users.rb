@@ -19,5 +19,7 @@
 
 FactoryGirl.define do
   factory :user do
+    sequence(:name) { Gimei.new.kanji }
+    profile '自己紹介です'
   end
 end

@@ -33,9 +33,15 @@ class EventSchedule < ActiveRecord::Base
   validates :start_time, presence: true
   validates :end_time, presence: true
 
-  validate do |date|
-    unless Date.today < self.start_date && self.start_date < self.end_date
-      self.errors.add :start_date, '正しい期間を指定して下さい'
+  validate do |schedule|
+    unless Date.today <= schedule.start_date && schedule.start_date < schedule.end_date
+      schedule.errors.add :start_date, '正しい期間を指定して下さい'
+    end
+  end
+
+  validate do |schedule|
+    unless schedule.start_time < schedule.end_time
+      schedule.errors.add :start_time, '正しい期間を指定して下さい'
     end
   end
 
@@ -53,7 +59,7 @@ class EventSchedule < ActiveRecord::Base
 
     # 期間が平日・休日を含んでいるか
     wday = self.start_date.wday
-    duration = ((self.end_date.to_f - self.start_date.to_f) / 1.day).floor
+    duration = self.end_date - self.start_date
     self.weekday = (wday < 6)
     self.holiday = (wday + duration >= 6)
   end
