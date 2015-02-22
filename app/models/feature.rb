@@ -21,8 +21,8 @@ class Feature < Post
 
   #  Callbacks
   #-----------------------------------------------
-  before_validation do |information|
-    information.kind = :information
+  before_validation do |feature|
+    feature.kind = :feature
   end
 
 end
