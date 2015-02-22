@@ -4,7 +4,7 @@
 #
 #  id          :integer          not null, primary key
 #  event_id    :integer          not null, indexed
-#  medium_id   :integer          not null, indexed
+#  image_id    :integer          not null, indexed
 #  title       :string(255)      default(""), not null
 #  description :text
 #  sort        :integer          default(0), not null

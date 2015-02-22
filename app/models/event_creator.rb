@@ -7,17 +7,17 @@
 #  user_id  :integer          not null, indexed
 #
 
-class EventCreator < ActiveRecord::Base
+class EventOrganizer < ActiveRecord::Base
 
   #  Associations
   #-----------------------------------------------
   belongs_to :event
-  belongs_to :user
+  belongs_to :organizer
 
 
   #  Validations
   #-----------------------------------------------
   validates_associated :event
-  validates_associated :user
+  validates_associated :organizer
 
 end

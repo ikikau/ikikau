@@ -2,9 +2,9 @@
 #
 # Table name: event_organizers
 #
-#  id       :integer          not null, primary key
-#  event_id :integer          not null, indexed
-#  user_id  :integer          not null, indexed
+#  id           :integer          not null, primary key
+#  event_id     :integer          not null, indexed
+#  organizer_id :integer          not null, indexed
 #
 
 class EventOrganizer < ActiveRecord::Base
@@ -12,12 +12,12 @@ class EventOrganizer < ActiveRecord::Base
   #  Associations
   #-----------------------------------------------
   belongs_to :event
-  belongs_to :user
+  belongs_to :organizer
 
 
   #  Validations
   #-----------------------------------------------
   validates_associated :event
-  validates_associated :user
+  validates_associated :organizer
 
 end

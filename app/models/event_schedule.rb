@@ -1,16 +1,18 @@
 # == Schema Information
 #
-# Table name: event_dates
+# Table name: event_schedules
 #
-#  id       :integer          not null, primary key
-#  event_id :integer          not null, indexed
-#  start_at :datetime         not null
-#  end_at   :datetime         not null
-#  weekday  :boolean          not null, indexed
-#  holiday  :boolean          not null, indexed
+#  id         :integer          not null, primary key
+#  event_id   :integer          not null, indexed
+#  start_date :date             not null
+#  end_date   :date             not null
+#  start_time :time             not null
+#  end_time   :time             not null
+#  weekday    :boolean          not null, indexed
+#  holiday    :boolean          not null, indexed
 #
 
-class EventDate < ActiveRecord::Base
+class EventSchedule < ActiveRecord::Base
 
   #  Associations
   #-----------------------------------------------

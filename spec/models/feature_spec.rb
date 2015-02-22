@@ -1,13 +1,15 @@
 # == Schema Information
 #
-# Table name: features
+# Table name: posts
 #
-#  id         :integer          not null, primary key
-#  status     :integer          default(0), not null
-#  title      :string(255)      default(""), not null
-#  content    :text
-#  created_at :datetime
-#  updated_at :datetime
+#  id           :integer          not null, primary key
+#  thumbnail_id :integer
+#  kind         :integer          default(0), not null
+#  status       :integer          default(0), not null
+#  title        :string(255)      default(""), not null
+#  content      :text
+#  created_at   :datetime
+#  updated_at   :datetime
 #
 
 require 'rails_helper'

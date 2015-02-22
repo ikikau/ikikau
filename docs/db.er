@@ -1,3 +1,13 @@
+#  Admin
+#-----------------------------------------------
+[admin_users]
+* id         { label: "integer" }
++ avatar_id  { label: "integer" }
+  name       { label: "string" } # null: false
+  created_at { label: "datetime" }
+  updated_at { label: "datetime" }
+
+
 [admin_user_accounts]
 * id                     { label: "integer" }
 + admin_user_id          { label: "integer" } # index: true, null: false
@@ -17,124 +27,113 @@
 admin_user_accounts 1--1 admin_users # dependent: :delete
 
 
-[admin_users]
-* id         { label: "integer" }
-+ avatar_id  { label: "integer" }
-  name       { label: "string" } # null: false
-  created_at { label: "datetime" }
-  updated_at { label: "datetime" }
-
-
+#  Area
+#-----------------------------------------------
 [areas]
 * id           { label: "integer" }
-  name         { label: "string" }  # null: false, default: ''
-  sort         { label: "integer" } # null: false, default: 0
-  events_count { label: "integer" } # null: false, default: 0
+  name         { label: "string" } # null: false
+  events_count { label: "integer" } # default: 0
 
 
+#  Event
+#-----------------------------------------------
 [events]
-* id            { label: "integer" }
-+ area_id       { label: "integer" } # index: true, null: false
-+ thumbnail_id  { label: "integer" }
-  title         { label: "string" }  # null: false, default: ''
-  content       { label: "text" }
-  status        { label: "integer" } # limit: 1, null: false, default: 0
-  location_name { label: "string" }  # null: false, default: ''
-  prefecture    { label: "integer" } # limit: 1, index: true, null: false
-  postal_code   { label: "string" }  # limit: 7
-  address       { label: "string" }  # null: false, default: ''
-  created_at    { label: "datetime" }
-  updated_at    { label: "datetime" }
+* id                { label: "integer" }
++ area_id           { label: "integer" } # index: true, null: false
++ thumbnail_id      { label: "integer" }
+  title             { label: "string" }  # null: false, default: ''
+  content           { label: "text" }
+  status            { label: "integer" } # limit: 1, null: false, default: 0
+  prefecture        { label: "integer" } # limit: 1, index: true, null: false
+  address_1         { label: "string" }  # null: false
+  address_2         { label: "string" }  # null: false
+  address_code_1    { label: "string" }  # limit: 8, index: true  --+
+  address_code_2    { label: "string" }  # limit: 8, index: true    |
+  address_code_3    { label: "string" }  # limit: 8, index: true    |
+  address_code_4    { label: "string" }  # limit: 8, index: true    | Composite index
+  address_code_5    { label: "string" }  # limit: 8, index: true    |
+  address_code_6    { label: "string" }  # limit: 8, index: true    |
+  address_code_7    { label: "string" }  # limit: 8, index: true    |
+  address_code_8    { label: "string" }  # limit: 8, index: true  --+
+  address_code_size { label: "integer" } # limit: 1, null: false, default: 0
+  created_at        { label: "datetime" }
+  updated_at        { label: "datetime" }
 
-events +--1 areas # dependent: :delete
-events 1--? media # dependent: :nullify
-
-
-[event_creators]
-* id       { label: "integer" }
-+ event_id { label: "integer" } # index: false, null: false
-+ user_id  { label: "integer" } # index: false, null: false
-
-event_creators +--1 events # dependent: :delete
-event_creators +--1 users  # dependent: :delete
-
-
-[event_dates]
-* id       { label: "integer" }
-+ event_id { label: "integer" }  # index: true, null: false
-  start_at { label: "datetime" } # null: false
-  end_at   { label: "datetime" } # null: false
-  weekday  { label: "boolean" }  # null: false
-  holiday  { label: "boolean" }  # null: false
-
-event_dates +--1 events # dependent: :delete
+events +--1 areas                        # dependent: :delete
+events 1--? media { label: "thumbnail" } # dependent: :nullify
 
 
 [event_images]
 * id          { label: "integer" }
 + event_id    { label: "integer" } # index: true, null: false
-+ medium_id   { label: "integer" } # null: false
++ image_id    { label: "integer" } # null: false
   title       { label: "string" }  # null: false, default: ''
   description { label: "text" }
   sort        { label: "integer" } # null: false, default: 0
   created_at  { label: "datetime" }
   updated_at  { label: "datetime" }
 
-event_images +--1 events # dependent: :delete
-event_images 1--1 media  # dependent: :delete
+event_images +--1 events                   # dependent: :delete
+event_images 1--1 media { label: "image" } # dependent: :delete
 
 
 [event_organizers]
-* id       { label: "integer" }
-+ event_id { label: "integer" } # index: false, null: false
-+ user_id  { label: "integer" } # index: false, null: false
+* id           { label: "integer" }
++ event_id     { label: "integer" } # index: false, null: false
++ organizer_id { label: "integer" } # index: false, null: false
 
-event_creators +--1 events # dependent: :delete
-event_creators +--1 users  # dependent: :delete
+event_organizers +--1 events     # dependent: :delete
+event_organizers +--1 organizers # dependent: :delete
 
 
-[features]
+[event_schedules]
 * id         { label: "integer" }
-  status     { label: "integer" } # limit: 1, null: false, default: 0
-  title      { label: "string" }  # null: false, default: ''
-  content    { label: "text" }
++ event_id   { label: "integer" } # index: true, null: false
+  start_date { label: "date" }    # null: false
+  end_date   { label: "date" }    # null: false
+  start_time { label: "time" }    # null: false
+  end_time   { label: "time" }    # null: false
+  weekday    { label: "boolean" } # null: false
+  holiday    { label: "boolean" } # null: false
+
+event_schedules +--1 events # dependent: :delete
+
+
+#  Post
+#-----------------------------------------------
+[posts]
+* id           { label: "integer" }
++ thumbnail_id { label: "integer" }
+  kind         { label: "integer" } # limit: 1, null: false, default: 0
+  status       { label: "integer" } # limit: 1, null: false, default: 0
+  title        { label: "string" }  # null: false, default: ''
+  content      { label: "text" }
+  created_at   { label: "datetime" }
+  updated_at   { label: "datetime" }
+
+posts 1--? media { label: "thumbnail" } # dependent: :nullify
+
+
+[features] { label: "STI" }
+features 1--1 posts
+
+
+[information] { label: "STI" }
+information 1--1 posts
+
+
+#  User
+#-----------------------------------------------
+[users]
+* id         { label: "integer" }
++ avatar_id  { label: "integer" }
+  name       { label: "string" }  # null: false
+  profile    { label: "text" }
+  role       { label: "integer" } # limit: 1, null: false
   created_at { label: "datetime" }
   updated_at { label: "datetime" }
 
-
-[infomation]
-* id         { label: "integer" }
-  status     { label: "integer" } # limit: 1, null: false, default: 0
-  title      { label: "string" }  # null: false, default: ''
-  content    { label: "text" }
-  created_at { label: "datetime" }
-  updated_at { label: "datetime" }
-
-
-[media]
-+ id                 { label: "integer" }
-  asset_file_name    { label: "string" }
-  asset_content_type { label: "string" }
-  asset_file_size    { label: "integer" }
-  asset_updated_at   { label: "datetime" }
-  created_at         { label: "datetime" }
-  updated_at         { label: "datetime" }
-
-
-[tags]
-* id             { label: "integer" }
-  name           { label: "string" }
-  taggings_count { label: "integer" } # default: 0
-
-
-[taggings]
-* id            { label: "integer" }
-+ tag_id        { label: "integer" } # index: true, null: false
-+ taggable_id   { label: "integer" } # polymorphic: true, index: true, null: false
-+ taggable_type { label: "string" }
-
-taggings +--1 tags                          # dependent: :delete
-taggings +--1 events { label: "taggables" } # psuedo fk
+users 1--? media { label: "avatar" } # dependent: :nullify
 
 
 [user_accounts]
@@ -156,13 +155,35 @@ taggings +--1 events { label: "taggables" } # psuedo fk
 user_accounts 1--1 users # dependent: :delete
 
 
-[users]
-* id         { label: "integer" }
-+ avatar_id  { label: "integer" }
-  name       { label: "string" }  # null: false
-  profile    { label: "text" }
-  role       { label: "integer" } # limit: 1, null: false
-  created_at { label: "datetime" }
-  updated_at { label: "datetime" }
+[organizers] { label: "STI" }
+organizers 1--1 users
 
-users 1--? media { label: "avatar" } # dependent: :nullify
+
+[participants] { label: "STI" }
+participants 1--1 users
+
+
+#  Other
+#-----------------------------------------------
+[media]
++ id                 { label: "integer" }
+  asset_file_name    { label: "string" }
+  asset_content_type { label: "string" }
+  asset_file_size    { label: "integer" }
+  asset_updated_at   { label: "datetime" }
+
+
+[tags]
+* id             { label: "integer" }
+  name           { label: "string" }
+  taggings_count { label: "integer" } # default: 0
+
+
+[taggings]
+* id            { label: "integer" }
++ tag_id        { label: "integer" } # index: true, null: false
++ taggable_id   { label: "integer" } # polymorphic: true, index: true, null: false
++ taggable_type { label: "string" }
+
+taggings +--1 tags                          # dependent: :delete
+taggings +--1 events { label: "taggables" } # psuedo fk
