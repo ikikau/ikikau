@@ -21,7 +21,7 @@ class Feature < Post
 
   #  Callbacks
   #-----------------------------------------------
-  before_validation do |feature|
+  after_initialize do |feature|
     feature.kind = :feature
   end
 

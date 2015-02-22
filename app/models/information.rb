@@ -21,7 +21,7 @@ class Information < Post
 
   #  Callbacks
   #-----------------------------------------------
-  before_validation do |information|
+  after_initialize do |information|
     information.kind = :information
   end
 
