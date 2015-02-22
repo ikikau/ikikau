@@ -75,11 +75,6 @@ class Admin::EventsController < Admin::ApplicationController
           :start_at,
           :end_at,
           :_destroy,
-        ]
-        event_creators: [
-          :id,
-          :user_id,
-          :_destroy,
         ],
         event_organizers: [
           :id,

@@ -15,9 +15,10 @@
 #  users_avatar_id_fk  (avatar_id)
 #
 
-# Read about factories at https://github.com/thoughtbot/factory_girl
+class Participant < User
 
-FactoryGirl.define do
-  factory :user do
-  end
+  #  Scopes
+  #-----------------------------------------------
+  default_scope -> { with_role :participant }
+
 end

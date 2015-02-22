@@ -14,10 +14,6 @@
 
 class Information < Post
 
-  extend Enumerize
-  include Concerns::EnumerizeExtension
-
-
   #  Scopes
   #-----------------------------------------------
   default_scope -> { with_kind :information }

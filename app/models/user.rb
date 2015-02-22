@@ -3,12 +3,16 @@
 # Table name: users
 #
 #  id         :integer          not null, primary key
-#  avatar_id  :integer          indexed
+#  avatar_id  :integer
 #  name       :string(255)      not null
 #  profile    :text
 #  role       :integer          not null
 #  created_at :datetime
 #  updated_at :datetime
+#
+# Indexes
+#
+#  users_avatar_id_fk  (avatar_id)
 #
 
 class User < ActiveRecord::Base
@@ -23,7 +27,6 @@ class User < ActiveRecord::Base
   belongs_to :avatar,
     class_name: '::Medium',
     dependent: :destroy
-  has_many :event_creators, dependent: :destroy
   has_many :event_organizers, dependent: :destroy
 
 
@@ -42,7 +45,7 @@ class User < ActiveRecord::Base
     length: { maximum: 100 }
   validates :role,
     presence: true,
-    inclusion: { in: %w[general creator organizer] }
+    inclusion: { in: %w[participant organizer] }
 
 
   #  Scopes
@@ -54,11 +57,10 @@ class User < ActiveRecord::Base
   #-----------------------------------------------
   enumerize :role,
     in: {
-      general:   0,
-      creator:   1,
-      organizer: 2,
+      participant: 1,
+      organizer:   2,
     },
-    default: :general,
+    default: :participant,
     scope: true
 
   attr_media_url :avatar,

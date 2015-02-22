@@ -14,13 +14,8 @@
 
 class Feature < Post
 
-  extend Enumerize
-  include Concerns::EnumerizeExtension
-
-
   #  Scopes
   #-----------------------------------------------
-  paginates_per 20
   default_scope -> { with_kind :feature }
 
 end

@@ -23,6 +23,9 @@ class Post < ActiveRecord::Base
   validates :status,
     presence: true,
     inclusion: { in: %w[private public] }
+  validates :status,
+    presence: true,
+    inclusion: { in: %w[information feature] }
   validates :title,
     presence: true,
     length: { maximum: 200 }

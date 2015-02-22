@@ -3,25 +3,32 @@
 # Table name: events
 #
 #  id                :integer          not null, primary key
-#  area_id           :integer          not null, indexed
-#  thumbnail_id      :integer          indexed
+#  area_id           :integer          not null
+#  thumbnail_id      :integer
 #  title             :string(255)      default(""), not null
 #  content           :text
 #  status            :integer          default(0), not null
-#  prefecture        :integer          not null, indexed
+#  prefecture        :integer          not null
 #  address_1         :string(255)      default(""), not null
 #  address_2         :string(255)      default(""), not null
-#  address_code_1    :string(8)        default(""), not null, indexed => [address_code_2, address_code_3, address_code_4, address_code_5, address_code_6, address_code_7, address_code_8]
-#  address_code_2    :string(8)        default(""), not null, indexed => [address_code_1, address_code_3, address_code_4, address_code_5, address_code_6, address_code_7, address_code_8]
-#  address_code_3    :string(8)        default(""), not null, indexed => [address_code_1, address_code_2, address_code_4, address_code_5, address_code_6, address_code_7, address_code_8]
-#  address_code_4    :string(8)        default(""), not null, indexed => [address_code_1, address_code_2, address_code_3, address_code_5, address_code_6, address_code_7, address_code_8]
-#  address_code_5    :string(8)        default(""), not null, indexed => [address_code_1, address_code_2, address_code_3, address_code_4, address_code_6, address_code_7, address_code_8]
-#  address_code_6    :string(8)        default(""), not null, indexed => [address_code_1, address_code_2, address_code_3, address_code_4, address_code_5, address_code_7, address_code_8]
-#  address_code_7    :string(8)        default(""), not null, indexed => [address_code_1, address_code_2, address_code_3, address_code_4, address_code_5, address_code_6, address_code_8]
-#  address_code_8    :string(8)        default(""), not null, indexed => [address_code_1, address_code_2, address_code_3, address_code_4, address_code_5, address_code_6, address_code_7]
+#  address_code_1    :string(8)        default(""), not null
+#  address_code_2    :string(8)        default(""), not null
+#  address_code_3    :string(8)        default(""), not null
+#  address_code_4    :string(8)        default(""), not null
+#  address_code_5    :string(8)        default(""), not null
+#  address_code_6    :string(8)        default(""), not null
+#  address_code_7    :string(8)        default(""), not null
+#  address_code_8    :string(8)        default(""), not null
 #  address_code_size :integer          default(0), not null
 #  created_at        :datetime
 #  updated_at        :datetime
+#
+# Indexes
+#
+#  events_address_codes        (address_code_1,address_code_2,address_code_3,address_code_4,address_code_5,address_code_6,address_code_7,address_code_8)
+#  events_thumbnail_id_fk      (thumbnail_id)
+#  index_events_on_area_id     (area_id)
+#  index_events_on_prefecture  (prefecture)
 #
 
 class Event < ActiveRecord::Base
@@ -37,15 +44,11 @@ class Event < ActiveRecord::Base
   belongs_to :thumbnail,
     class_name: '::Medium',
     dependent: :destroy
-  has_many :event_dates, dependent: :destroy
-  has_many :event_creators, dependent: :destroy
+  has_many :event_schedules, dependent: :destroy
   has_many :event_organizers, dependent: :destroy
-  has_many :creators,
-    through: :event_creators,
-    source: :user
   has_many :organizers,
     through: :event_organizers,
-    source: :user
+    source: :organizer
   has_many :event_images, dependent: :destroy
   has_many :taggings, as: :taggable
   has_many :tags,
@@ -59,15 +62,11 @@ class Event < ActiveRecord::Base
     allow_destroy: true,
     reject_if: :all_blank
 
-  accepts_nested_attributes_for :event_dates,
+  accepts_nested_attributes_for :event_schedules,
     allow_destroy: true,
     reject_if: :all_blank
 
   accepts_nested_attributes_for :event_images,
-    allow_destroy: true,
-    reject_if: :all_blank
-
-  accepts_nested_attributes_for :event_creators,
     allow_destroy: true,
     reject_if: :all_blank
 
@@ -80,9 +79,6 @@ class Event < ActiveRecord::Base
   #-----------------------------------------------
   validates_associated :area, presence: true
   validates_associated :thumbnail
-  # validates :event_creators,
-  #   presence: true,
-  #   length: { minimum: 1 }
   # validates :event_organizers,
   #   presence: true,
   #   length: { minimum: 1 }
@@ -95,9 +91,6 @@ class Event < ActiveRecord::Base
   validates :status,
     presence: true,
     inclusion: { in: %w[private public] }
-  validates :location_name,
-    presence: true,
-    length: { maximum: 150 }
   validates :prefecture,
     presence: true,
     inclusion: { in: 1..47 }
