@@ -13,15 +13,5 @@ module Admin
       admin_user_signed_in? && current_admin_user.id == id
     end
 
-
-    #  Previous Params
-    #-----------------------------------------------
-    def previous_params
-      flash[:params] || params
-    end
-    def save_current_params
-      flash[:params] = params
-    end
-
   end
 end

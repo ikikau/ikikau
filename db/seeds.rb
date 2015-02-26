@@ -1,39 +1,41 @@
 include Ikikau::FactoryGirlHelper
 
+ActiveRecord::Base.after_save { print '#' }
+
+def section(name)
+  puts '==> Creating %s...' % name
+
+  ActiveRecord::Base.transaction do
+    yield
+    puts
+  end
+end
+
 
 #  Area
 #-----------------------------------------------
-puts '==> Creating areas...'
-
-ActiveRecord::Base.transaction do
-  areas = %w[
-    23区東エリア
-    23区西エリア
-    多摩エリア
-    その他
-  ]
-
+section 'areas' do
   $areas = []
 
-  areas.each do |area|
+  [
+    '23区東エリア',
+    '23区西エリア',
+    '多摩エリア',
+    'その他',
+  ].each do |area|
     area = fg_build.area name: area
 
     area.save!
     $areas << area
-    print '#'
   end
 
   $the_area = $areas.first
-
-  puts
 end
 
 
 #  Tag
 #-----------------------------------------------
-puts '==> Creating tags...'
-
-ActiveRecord::Base.transaction do
+section 'tags' do
   $tags = []
 
   5.times do
@@ -41,18 +43,13 @@ ActiveRecord::Base.transaction do
 
     tag.save!
     $tags << tag
-    print '#'
   end
-
-  puts
 end
 
 
 #  Admin
 #-----------------------------------------------
-puts '==> Creating an admin user...'
-
-ActiveRecord::Base.transaction do
+section 'an admin user' do
   $the_admin_user_account = fg_build.admin_user_account(
     email: 'admin@ikikau.com'
   )
@@ -62,16 +59,12 @@ ActiveRecord::Base.transaction do
   )
 
   $the_admin_user_account.save!
-
-  puts '#'
 end
 
 
 #  User
 #-----------------------------------------------
-puts '==> Creating users...'
-
-ActiveRecord::Base.transaction do
+section 'users' do
   $user_accounts = []
 
   15.times do |i|
@@ -83,20 +76,15 @@ ActiveRecord::Base.transaction do
 
     user_account.save!
     $user_accounts << user_account
-    print '#'
   end
 
   $the_user_account = $user_accounts.first
-
-  puts
 end
 
 
 #  Event
 #-----------------------------------------------
-puts '==> Creating events...'
-
-ActiveRecord::Base.transaction do
+section 'events' do
   $events = []
 
   20.times do
@@ -107,40 +95,27 @@ ActiveRecord::Base.transaction do
 
     event.save!
     $events << event
-    print '#'
   end
-
-  puts
 end
 
 
 #  Information
 #-----------------------------------------------
-puts '==> Creating infomation...'
-
-ActiveRecord::Base.transaction do
+section 'infomation' do
   5.times do
     information = fg_build.information
 
     information.save!
-    print '#'
   end
-
-  puts
 end
 
 
 #  Feature
 #-----------------------------------------------
-puts '==> Creating features...'
-
-ActiveRecord::Base.transaction do
+section 'features' do
   5.times do
     feature = fg_build.feature
 
     feature.save!
-    print '#'
   end
-
-  puts
 end
